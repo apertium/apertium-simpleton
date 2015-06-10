@@ -19,6 +19,7 @@
 
 #include "installer.hpp"
 #include "ui_installer.h"
+#include "common.hpp"
 #include <QtGui>
 #include <QMessageBox>
 #include <QLabel>
@@ -165,7 +166,7 @@ void Installer::installpkg() {
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(dlProgress(qint64,qint64)));
     loop.exec();
 
-    QString appdata_path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString appdata_path = DATALOCATION;
     QDir().mkpath(appdata_path);
     QDir appdata(appdata_path);
     appdata.remove("data.tmp");

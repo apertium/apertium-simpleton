@@ -17,30 +17,16 @@
 * along with apertium-simpleton.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "simpleton.hpp"
-#include "common.hpp"
-#include <QtGui>
-#include <QApplication>
+#pragma once
+#ifndef COMMON_HPP_fc74fd919e58451d89f5d0bba814925a
+#define COMMON_HPP_fc74fd919e58451d89f5d0bba814925a
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+#include <QtGlobal>
 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+#if QT_VERSION >= 0x050400
+    #define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+#else
+    #define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+#endif
 
-    app.setOrganizationDomain("tinodidriksen.com");
-    app.setOrganizationName("Tino Didriksen Consult");
-    app.setApplicationName("Apertium Simpleton");
-    app.setQuitOnLastWindowClosed(true);
-
-    QSettings::setDefaultFormat(QSettings::IniFormat);
-
-    Simpleton w;
-    w.show();
-
-    QDir appdata(DATALOCATION);
-    if (!appdata.exists("apertium-all-dev/bin") || !appdata.exists("usr/share/apertium/modes")) {
-        w.openInstaller();
-    }
-
-    return app.exec();
-}
+#endif

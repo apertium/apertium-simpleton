@@ -20,6 +20,7 @@
 #include "simpleton.hpp"
 #include "ui_simpleton.h"
 #include "installer.hpp"
+#include "common.hpp"
 
 Simpleton::Simpleton(QWidget *parent) :
     QMainWindow(parent),
@@ -42,7 +43,7 @@ void Simpleton::openInstaller() {
 }
 
 void Simpleton::enumModes() {
-    QDir appdata(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QDir appdata(DATALOCATION);
     if (!appdata.exists("usr/share/apertium/modes")) {
         return;
     }
@@ -62,7 +63,7 @@ void Simpleton::runMode() {
         return;
     }
 
-    QDir appdata(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QDir appdata(DATALOCATION);
     QDir dir(appdata.absoluteFilePath("usr/share/apertium/modes"));
     if (!dir.exists() || !dir.exists(name+".mode")) {
         return;
