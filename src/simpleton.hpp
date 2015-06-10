@@ -17,8 +17,9 @@
 * along with apertium-simpleton.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SIMPLETON_HPP
-#define SIMPLETON_HPP
+#pragma once
+#ifndef SIMPLETON_HPP_fc74fd919e58451d89f5d0bba814925a
+#define SIMPLETON_HPP_fc74fd919e58451d89f5d0bba814925a
 
 #include <QtGui>
 #include <QMainWindow>

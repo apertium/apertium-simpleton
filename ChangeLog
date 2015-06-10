@@ -1,0 +1,20 @@
+2015-06-10  jezral
+
+	* [r60703] .: Promote from PoC toyto usable minimal foundation
+
+2015-05-29  jezral
+
+	* [r60575] LC_ALL=en_US.UTF-8
+	* [r60574] Lazier check for apertium-all-dev
+	* [r60573] ; vs. :
+	* [r60572] OS X support
+
+2015-05-27  jezral
+
+	* [r60541] Create the writable path before trying to write into it
+
+2015-03-08  jezral
+
+	* [r59282] No longer need ISO-8859-1 I/O
+	* [r59277] Initial commit of Apertium Simpleton UI
+

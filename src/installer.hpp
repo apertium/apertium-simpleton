@@ -17,8 +17,9 @@
 * along with apertium-simpleton.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INSTALLER_HPP
-#define INSTALLER_HPP
+#pragma once
+#ifndef INSTALLER_HPP_fc74fd919e58451d89f5d0bba814925a
+#define INSTALLER_HPP_fc74fd919e58451d89f5d0bba814925a
 
 #include <QDialog>
 #include <QNetworkAccessManager>
