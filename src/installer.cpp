@@ -65,6 +65,8 @@ Installer::Installer(QWidget *parent) :
     #define OS_PATH "win32"
 #elif defined(Q_OS_MAC)
     #define OS_PATH "osx"
+#elif defined(Q_OS_LINUX)
+    #define OS_PATH "osx"
 #else
     #error "Not yet specialized for other OSs"
 #endif
@@ -74,6 +76,7 @@ Installer::Installer(QWidget *parent) :
     g->addWidget(new QLabel("Size"), row, 1, 1, 1, Qt::AlignHCenter);
     g->addWidget(new QLabel("Action"), row, 2, 1, 1, Qt::AlignRight);
 
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     {
         reply = qnam.head(QNetworkRequest(QUrl("http://apertium.projectjj.com/" OS_PATH "/nightly/apertium-all-dev.7z")));
         QEventLoop loop;
@@ -100,6 +103,7 @@ Installer::Installer(QWidget *parent) :
         b->setProperty("lm", lm);
         connect(b, SIGNAL(clicked()), this, SLOT(installpkg()));
     }
+#endif
 
     {
         wait.setLabelText("Checking for new language pairs ...");
