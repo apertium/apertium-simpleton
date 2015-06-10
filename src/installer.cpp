@@ -171,6 +171,9 @@ void Installer::installpkg() {
     QDir appdata(appdata_path);
     appdata.remove("data.tmp");
     appdata.remove("data.tar");
+    appdata.remove("data.tar.xz");
+    appdata.remove("debian-binary");
+    appdata.remove("control.tar.gz");
 
     QFile file(appdata.filePath("data.tmp"));
     file.open(QIODevice::WriteOnly);
@@ -181,7 +184,11 @@ void Installer::installpkg() {
     wait->setLabelText("Unpacking ...");
     QProcess *up = new QProcess(this);
     up->setWorkingDirectory(appdata_path);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     up->start(exep.absoluteFilePath("7z"), QStringList() << "x" << "-y" << "data.tmp");
+#else
+    up->start("ar", QStringList() << "x" << "data.tmp");
+#endif
     up->waitForStarted();
     up->waitForFinished();
     up->deleteLater();
@@ -195,10 +202,22 @@ void Installer::installpkg() {
         up->deleteLater();
     }
 
+    if (appdata.exists("data.tar.xz")) {
+        QProcess *up = new QProcess(this);
+        up->setWorkingDirectory(appdata_path);
+        up->start("tar", QStringList() << "-Jxf" << "data.tar.xz");
+        up->waitForStarted();
+        up->waitForFinished();
+        up->deleteLater();
+    }
+
     wait->close();
     wait->deleteLater();
     appdata.remove("data.tmp");
     appdata.remove("data.tar");
+    appdata.remove("data.tar.xz");
+    appdata.remove("debian-binary");
+    appdata.remove("control.tar.gz");
 
     QSettings conf;
     conf.setValue(sender()->property("name").toString(), sender()->property("lm").toString());

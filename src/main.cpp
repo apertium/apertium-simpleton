@@ -38,7 +38,11 @@ int main(int argc, char *argv[]) {
     w.show();
 
     QDir appdata(DATALOCATION);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     if (!appdata.exists("apertium-all-dev/bin") || !appdata.exists("usr/share/apertium/modes")) {
+#else
+    if (!appdata.exists("usr/share/apertium/modes")) {
+#endif
         w.openInstaller();
     }
 
