@@ -9,6 +9,7 @@ SOURCES += \
     src/installer.cpp
 
 HEADERS += \
+	src/version.hpp \
 	src/simpleton.hpp \
     src/installer.hpp
 
