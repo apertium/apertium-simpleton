@@ -86,7 +86,6 @@ void Simpleton::runMode() {
     if (mode.indexOf("'/usr/share") == -1) {
         mode.replace(QRegularExpression("(\\s*)(/usr/share/\\S+)(\\s*)"), "\\1\"\\2\"\\3");
     }
-    mode.replace(QRegularExpression("(\\s*)(/usr/share/\\S+)(\\s*)"), "\\1\"\\2\"\\3");
     mode.replace("/usr/share", appdata.absolutePath()+"/usr/share");
 
 #ifdef Q_OS_WIN
