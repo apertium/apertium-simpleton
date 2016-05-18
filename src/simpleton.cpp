@@ -108,7 +108,7 @@ void Simpleton::runMode() {
     run->start("/bin/sh", QStringList() << "-c" << mode);
 #endif
     run->waitForStarted();
-    run->write(ui->textInput->toPlainText().toUtf8());
+    run->write(ui->textInput->toPlainText().toUtf8() + "\n.");
     run->closeWriteChannel();
     run->waitForFinished();
     ui->textOutput->setPlainText(QString::fromUtf8(run->readAll()));
