@@ -89,6 +89,8 @@ void Simpleton::runMode() {
     mode.replace("/usr/share", appdata.absolutePath()+"/usr/share");
 
 #ifdef Q_OS_WIN
+    // Windows can't handle C:/ paths in ' quotes
+    mode.replace("'", "\"");
 	#define OS_SEP ";"
 #else
 	#define OS_SEP ":"
