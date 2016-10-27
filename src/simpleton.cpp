@@ -96,6 +96,9 @@ void Simpleton::runMode() {
 	#define OS_SEP ":"
 #endif
 
+    mode.prepend("apertium-destxt | ");
+    mode.append(" | apertium-retxt");
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("PATH", appdata.absoluteFilePath("apertium-all-dev/bin") + OS_SEP + env.value("PATH"));
     env.insert("LC_ALL", "en_US.UTF-8");
@@ -110,7 +113,7 @@ void Simpleton::runMode() {
     run->start("/bin/sh", QStringList() << "-c" << mode);
 #endif
     run->waitForStarted();
-    run->write(ui->textInput->toPlainText().toUtf8() + "\n.");
+    run->write(ui->textInput->toPlainText().toUtf8());
     run->closeWriteChannel();
     run->waitForFinished();
     ui->textOutput->setPlainText(QString::fromUtf8(run->readAll()));
