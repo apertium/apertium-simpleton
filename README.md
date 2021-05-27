@@ -1,5 +1,5 @@
 # Apertium Simpleton
-See http://wiki.apertium.org/wiki/Apertium_Simpleton_UI
+See https://wiki.apertium.org/wiki/Apertium_Simpleton_UI
 
 This tool is designed for Windows and macOS.
 It may work on Linux, but no real effort has been made to do it correctly.
