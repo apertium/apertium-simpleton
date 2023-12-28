@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, Tino Didriksen <mail@tinodidriksen.com>
+* Copyright (C) 2015-2023, Tino Didriksen <mail@tinodidriksen.com>
 *
 * This file is part of apertium-simpleton
 *
@@ -23,28 +23,28 @@
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+	QApplication app(argc, argv);
 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
-    app.setOrganizationDomain("tinodidriksen.com");
-    app.setOrganizationName("Tino Didriksen Consult");
-    app.setApplicationName("Apertium Simpleton");
-    app.setQuitOnLastWindowClosed(true);
+	app.setOrganizationDomain("apertium.org");
+	app.setOrganizationName("Apertium");
+	app.setApplicationName("Apertium Simpleton");
+	app.setQuitOnLastWindowClosed(true);
 
-    QSettings::setDefaultFormat(QSettings::IniFormat);
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 
-    Simpleton w;
-    w.show();
+	Simpleton w;
+	w.show();
 
-    QDir appdata(DATALOCATION);
+	QDir appdata(DATALOCATION);
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
-    if (!appdata.exists("apertium-all-dev/bin") || !appdata.exists("usr/share/apertium/modes")) {
+	if (!appdata.exists("apertium-all-dev/bin") || !appdata.exists("usr/share/apertium/modes")) {
 #else
-    if (!appdata.exists("usr/share/apertium/modes")) {
+	if (!appdata.exists("usr/share/apertium/modes")) {
 #endif
-        w.openInstaller();
-    }
+		w.openInstaller();
+	}
 
-    return app.exec();
+	return app.exec();
 }

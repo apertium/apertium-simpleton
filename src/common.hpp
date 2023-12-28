@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, Tino Didriksen <mail@tinodidriksen.com>
+* Copyright (C) 2015-2023, Tino Didriksen <mail@tinodidriksen.com>
 *
 * This file is part of apertium-simpleton
 *
@@ -22,11 +22,25 @@
 #define COMMON_HPP_fc74fd919e58451d89f5d0bba814925a
 
 #include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	#include <QtCore5Compat/QTextCodec>
+#endif
 
 #if QT_VERSION >= 0x050400
-    #define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+	#define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
 #else
-    #define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+	#define DATALOCATION QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+#endif
+
+#ifdef _MSC_VER
+	// warning C4512: assignment operator could not be generated
+	#pragma warning (disable: 4512)
+	// warning C4456: declaration hides previous local declaration
+	#pragma warning (disable: 4456)
+	// warning C4458: declaration hides class member
+	#pragma warning (disable: 4458)
+	// warning C4312: 'operation' : conversion from 'type1' to 'type2' of greater size
+	#pragma warning (disable: 4312)
 #endif
 
 #endif

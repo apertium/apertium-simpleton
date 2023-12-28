@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, Tino Didriksen <mail@tinodidriksen.com>
+* Copyright (C) 2015-2023, Tino Didriksen <mail@tinodidriksen.com>
 *
 * This file is part of apertium-simpleton
 *
@@ -31,21 +31,21 @@ class Installer;
 }
 
 class Installer : public QDialog {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit Installer(QWidget *parent = 0);
-    ~Installer();
+	explicit Installer(QWidget *parent = 0);
+	~Installer();
 
 public slots:
-    void installpkg();
-    void dlProgress(qint64, qint64);
+	void installpkg();
+	void dlProgress(qint64, qint64);
 
 private:
-    Ui::Installer *ui;
-    QNetworkAccessManager qnam;
-    QNetworkReply *reply;
-    QProgressDialog *wait;
+	Ui::Installer *ui;
+	QNetworkAccessManager qnam;
+	QNetworkReply *reply;
+	QProgressDialog *wait;
 };
 
 #endif // INSTALLER_HPP

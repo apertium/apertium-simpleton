@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, Tino Didriksen <mail@tinodidriksen.com>
+* Copyright (C) 2015-2023, Tino Didriksen <mail@tinodidriksen.com>
 *
 * This file is part of apertium-simpleton
 *
@@ -29,19 +29,23 @@ class Simpleton;
 }
 
 class Simpleton : public QMainWindow {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit Simpleton(QWidget *parent = 0);
-    ~Simpleton();
+	explicit Simpleton(QWidget *parent = 0);
+	~Simpleton();
 
 public slots:
-    void openInstaller();
-    void enumModes();
-    void runMode();
+	void openInstaller();
+	void enumModes();
+	void runMode();
+
+private slots:
+	void on_btnInstall_clicked();
+	void on_btnRun_clicked();
 
 private:
-    Ui::Simpleton *ui;
+	Ui::Simpleton *ui;
 };
 
 #endif // SIMPLETON_HPP

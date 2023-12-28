@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, Tino Didriksen <mail@tinodidriksen.com>
+* Copyright (C) 2015-2023, Tino Didriksen <mail@tinodidriksen.com>
 *
 * This file is part of apertium-simpleton
 *
@@ -23,99 +23,107 @@
 #include "common.hpp"
 
 Simpleton::Simpleton(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::Simpleton)
+	QMainWindow(parent),
+	ui(new Ui::Simpleton)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
-    enumModes();
+	enumModes();
 }
 
 Simpleton::~Simpleton() {
-    delete ui;
+	delete ui;
 }
 
 void Simpleton::openInstaller() {
-    Installer *in = new Installer(this);
-    in->setModal(true);
-    in->show();
-    connect(in, SIGNAL(destroyed()), this, SLOT(enumModes()));
+	Installer *in = new Installer(this);
+	in->setModal(true);
+	in->show();
+	connect(in, SIGNAL(destroyed()), this, SLOT(enumModes()));
 }
 
 void Simpleton::enumModes() {
-    QDir appdata(DATALOCATION);
-    if (!appdata.exists("usr/share/apertium/modes")) {
-        return;
-    }
+	QDir appdata(DATALOCATION);
+	if (!appdata.exists("usr/share/apertium/modes")) {
+		return;
+	}
 
-    ui->listModes->clear();
-    QDir moded(appdata.absoluteFilePath("usr/share/apertium/modes"));
-    QFileInfoList modes = moded.entryInfoList(QStringList() << "*.mode");
-    foreach (QFileInfo mode, modes) {
-        ui->listModes->addItem(mode.baseName());
-    }
-    ui->listModes->adjustSize();
+	ui->listModes->clear();
+	QDir moded(appdata.absoluteFilePath("usr/share/apertium/modes"));
+	QFileInfoList modes = moded.entryInfoList(QStringList() << "*.mode");
+	foreach (QFileInfo mode, modes) {
+		ui->listModes->addItem(mode.baseName());
+	}
+	ui->listModes->adjustSize();
 }
 
 void Simpleton::runMode() {
-    QString name = ui->listModes->currentText();
-    if (name.isEmpty()) {
-        return;
-    }
+	QString name = ui->listModes->currentText();
+	if (name.isEmpty()) {
+		return;
+	}
 
-    QDir appdata(DATALOCATION);
-    QDir dir(appdata.absoluteFilePath("usr/share/apertium/modes"));
-    if (!dir.exists() || !dir.exists(name+".mode")) {
-        return;
-    }
+	QDir appdata(DATALOCATION);
+	QDir dir(appdata.absoluteFilePath("usr/share/apertium/modes"));
+	if (!dir.exists() || !dir.exists(name+".mode")) {
+		return;
+	}
 
-    QFile file(dir.absoluteFilePath(name+".mode"));
-    if (file.open(QIODevice::ReadOnly) == false) {
-        return;
-    }
-    QString mode = file.readAll();
-    file.close();
+	QFile file(dir.absoluteFilePath(name+".mode"));
+	if (file.open(QIODevice::ReadOnly) == false) {
+		return;
+	}
+	QString mode = file.readAll();
+	file.close();
 
-    mode = mode.trimmed();
-    if (mode.isEmpty()) {
-        return;
-    }
+	mode = mode.trimmed();
+	if (mode.isEmpty()) {
+		return;
+	}
 
-    mode.replace("$1", "-g");
-    mode.remove("$2");
-    if (mode.indexOf("'/usr/share") == -1) {
-        mode.replace(QRegularExpression("(\\s*)(/usr/share/\\S+)(\\s*)"), "\\1\"\\2\"\\3");
-    }
-    mode.replace("/usr/share", appdata.absolutePath()+"/usr/share");
+	mode.replace("$1", "-g");
+	mode.remove("$2");
+	if (mode.indexOf("'/usr/share") == -1) {
+		mode.replace(QRegularExpression("(\\s*)(/usr/share/\\S+)(\\s*)"), "\\1\"\\2\"\\3");
+	}
+	mode.replace("/usr/share", appdata.absolutePath()+"/usr/share");
 
 #ifdef Q_OS_WIN
-    // Windows can't handle C:/ paths in ' quotes
-    mode.replace("'", "\"");
+	// Windows can't handle C:/ paths in ' quotes
+	mode.replace("'", "\"");
 	#define OS_SEP ";"
 #else
 	#define OS_SEP ":"
 #endif
 
-    mode.prepend("apertium-destxt | ");
-    mode.append(" | apertium-retxt");
+	mode.prepend("apertium-destxt | ");
+	mode.append(" | apertium-retxt");
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert("PATH", appdata.absoluteFilePath("apertium-all-dev/bin") + OS_SEP + env.value("PATH"));
-    env.insert("LC_ALL", "en_US.UTF-8");
+	QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+	env.insert("PATH", appdata.absoluteFilePath("apertium-all-dev/bin") + OS_SEP + env.value("PATH"));
+	env.insert("LC_ALL", "en_US.UTF-8");
 
-    QProcess *run = new QProcess(this);
-    run->setProcessEnvironment(env);
-    run->setProcessChannelMode(QProcess::MergedChannels);
+	QProcess *run = new QProcess(this);
+	run->setProcessEnvironment(env);
+	run->setProcessChannelMode(QProcess::MergedChannels);
 #ifdef Q_OS_WIN
-    run->setNativeArguments(mode);
-    run->start("cmd", QStringList() << "/D" << "/Q" << "/S" << "/C");
+	run->setNativeArguments(mode);
+	run->start("cmd", QStringList() << "/D" << "/Q" << "/S" << "/C");
 #else
-    run->start("/bin/sh", QStringList() << "-c" << mode);
+	run->start("/bin/sh", QStringList() << "-c" << mode);
 #endif
-    run->waitForStarted();
-    run->write(ui->textInput->toPlainText().toUtf8());
-    run->closeWriteChannel();
-    run->waitForFinished();
-    ui->textOutput->setPlainText(QString::fromUtf8(run->readAll()));
-    run->deleteLater();
+	run->waitForStarted();
+	run->write(ui->textInput->toPlainText().toUtf8());
+	run->closeWriteChannel();
+	run->waitForFinished();
+	ui->textOutput->setPlainText(QString::fromUtf8(run->readAll()));
+	run->deleteLater();
+}
+
+void Simpleton::on_btnInstall_clicked() {
+	openInstaller();
+}
+
+void Simpleton::on_btnRun_clicked() {
+	runMode();
 }
