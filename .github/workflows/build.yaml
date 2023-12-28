@@ -1,0 +1,19 @@
+name: Apertium Simpleton UI CI Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: dependencies
+      run: |
+           sudo apt-get -q update
+           sudo apt-get -qfy install --no-install-recommends cmake build-essential qt5-qmake qtbase5-dev
+    - name: cmake
+      run: cmake .
+    - name: make
+      run: make -j4
+    - name: make install
+      run: sudo make install
